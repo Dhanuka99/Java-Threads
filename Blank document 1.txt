@@ -1,0 +1,238 @@
+
+class Demo {
+    public static void main(String[] args) {
+        System.out.println("start of main method()");
+//        Proccess1 p1 = new Proccess1();
+//        Proccess2 p2 = new Proccess2();
+        Thread t1 = new Thread(new Proccess1());
+        Thread t2 = new Thread(new Proccess2());
+
+        t1.start();
+        t2.start();
+        System.out.println("End of main method()");
+    }
+}
+
+import com.sun.xml.internal.bind.v2.model.annotation.RuntimeAnnotationReader;
+
+class Computer{
+    int ram=16;
+}
+    class Proccess1 extends Computer implements Runnable{
+        @Override
+        public void run(){
+            for (int i=0;i<5;i++){
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("(Execute method1)"+i);
+            }
+        }
+    }
+
+    class Proccess2 extends Computer implements Runnable {
+        @Override
+        public void run(){
+            for (int i=0;i<5;i++){
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("(Execute method2)"+i);
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class thread implements Runnable {
+   @Override
+   public void run() {
+       try {
+           Thread.sleep(1500);
+       } catch (InterruptedException e) {
+       }
+       System.out.println("State of thread 1-" + Test.thread1.getState());
+       try {
+           Thread.sleep(200);
+       } catch (InterruptedException e) {
+       }
+   }
+}
+
+
+class Test implements Runnable {
+   static Thread thread1;
+   static Test obj;
+
+   public static void main(String[] args) throws InterruptedException {
+       obj = new Test();
+       thread1 = new Thread(obj);
+       System.out.println("thread 1 after create-" + thread1.getState());
+       thread1.start();
+       System.out.println("thread 1 after start" + thread1.getState());
+   }
+
+   @Override
+   public void run() {
+       Thread thread2 = new Thread(new thread());
+       System.out.println("state of thread 2" + thread2.getState());
+       thread2.start();
+   }
+}
+
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+class workerThread implements Runnable{
+   private String message;
+   public  workerThread(String s){
+       this.message=s;
+   }
+
+   @Override
+   public void run() {
+       System.out.println(Thread.currentThread().getName()+"---"+message); // Thread-0
+       processMessage();
+       System.out.println(Thread.currentThread().getName());
+   }
+
+   private void processMessage() {
+       try {
+           Thread.sleep(2000);
+       } catch (InterruptedException e) {
+           e.printStackTrace();
+       }
+   }
+   public static void main(String[] args) {
+       ExecutorService executorService= Executors.newFixedThreadPool(5);
+       for (int i = 0; i <10 ; i++) {
+           Runnable worker= new workerThread("");
+           executorService.execute(worker);
+       }
+       executorService.shutdown();
+       while (!executorService.isTerminated()){}
+       System.out.println("Finish");
+   }
+}
+
+======================
+class t1 extends Thread{
+   @Override
+   public void run() {
+
+       for (int i = 0; i < 10; i++) {
+           try {
+               Thread.sleep(500);
+           } catch (InterruptedException e) {
+               e.printStackTrace();
+           }
+           System.out.println("Thread 1");
+       }
+   }
+}
+class t2 extends Thread{
+   @Override
+   public void run() {
+       for (int i = 0; i < 10; i++) {
+           try {
+               Thread.sleep(500);
+           } catch (InterruptedException e) {
+               e.printStackTrace();
+           }
+           System.out.println("Thread 2");
+       }
+   }
+}
+
+class Demo{
+   public static void main(String[] args) {
+       // 0.-5-.10
+       System.out.println("Main start");
+       t1 myThread1=new t1();
+       t2 myThread2=new t2();
+
+       myThread1.setPriority(10); // Linux
+       System.out.println(myThread1.getPriority());
+       System.out.println(myThread2.getPriority());
+
+
+       myThread1.start();
+       myThread2.start();
+
+       System.out.println("Main End");
+   }
+}
+
+--------------------------------------------------------------------------
+creates a thread class extends Thread class
+--------------------------------------------------------------------------
+
+class TestThread1 extends Thread{
+    @Override
+    public void run(){
+        for (int i = 0; i < 10; i++) {
+            try {
+                sleep(1000);
+                System.out.println("Thread method 01 " +i);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+}
+
+class TestThread2 extends Thread{
+    @Override
+    public void run(){
+        for (int i = 0; i <10 ; i++) {
+            try {
+                sleep(1000);
+                System.out.println("Thread method 02 " +i);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+}
+class Example{
+    public static void main(String[] args) throws InterruptedException {
+        System.out.println("start main method..");
+        TestThread1 t1 = new TestThread1();
+        TestThread2 t2 = new TestThread2();
+
+        t1.start();
+        t2.start();
+
+        System.out.println("end main method..");
+    }
+}
